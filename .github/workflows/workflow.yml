@@ -1,4 +1,4 @@
-name: Build & Push to ECR
+name: Terraform Apply & Push Docker to ECR
 
 on:
   push:
@@ -9,8 +9,8 @@ env:
   IMAGE_TAG: ${{ github.sha }}
 
 jobs:
-  push-to-ecr:
-    name: Build and Push Docker image to ECR
+  terraform-and-docker:
+    name: Apply Terraform and Push Docker Image to ECR
     runs-on: ubuntu-latest
 
     steps:
@@ -24,19 +24,39 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      # 🧱 Terraform Setup and Apply
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        working-directory: terraform
+        run: terraform init
+
+      - name: Terraform Plan
+        working-directory: terraform
+        run: terraform plan
+
+      - name: Terraform Apply
+        working-directory: terraform
+        run: terraform apply -auto-approve
+
+      # 🔐 Login to ECR
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
+      # 🛠️ Build Docker image
       - name: Build Docker image
         run: |
           docker build -t ${{ secrets.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} .
 
+      # 🏷️ Tag image for ECR
       - name: Tag Docker image
         run: |
           docker tag ${{ secrets.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} \
-                     ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+            ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
 
+      # 🚀 Push to ECR
       - name: Push Docker image to Amazon ECR
         run: |
           docker push ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
