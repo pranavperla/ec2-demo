@@ -21,5 +21,6 @@ variable "aws_region" {
   default     = "ap-south-1"
 }
 
-backend "s3" {
+terraform {
+  backend "s3" {}
 }
