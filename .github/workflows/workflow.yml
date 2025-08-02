@@ -58,11 +58,11 @@ jobs:
       - name: Tag Backend Docker image
         run: |
           docker tag ec2demo-backend:${{ env.IMAGE_TAG }} \
-            160277203150.dkr.ecr.ap-south-1.amazonaws.com/ec2demo:${{ env.IMAGE_TAG }}
+            160277203150.dkr.ecr.ap-south-1.amazonaws.com/ec2demo-backend:${{ env.IMAGE_TAG }}
 
       - name: Push Backend Docker image
         run: |
-          docker push 160277203150.dkr.ecr.ap-south-1.amazonaws.com/ec2demo:${{ env.IMAGE_TAG }}
+          docker push 160277203150.dkr.ecr.ap-south-1.amazonaws.com/ec2demo-backend:${{ env.IMAGE_TAG }}
 
       ########################
       # 🚀 Frontend Container #
@@ -74,8 +74,8 @@ jobs:
       - name: Tag Frontend Docker image
         run: |
           docker tag ec2demo-frontend:${{ env.IMAGE_TAG }} \
-             160277203150.dkr.ecr.ap-south-1.amazonaws.com/ec2demo:${{ env.IMAGE_TAG }}
+             160277203150.dkr.ecr.ap-south-1.amazonaws.com/ec2demo-frontend:${{ env.IMAGE_TAG }}
 
       - name: Push Frontend Docker image
         run: |
-          docker push 160277203150.dkr.ecr.ap-south-1.amazonaws.com/ec2demo:${{ env.IMAGE_TAG }}
+          docker push 160277203150.dkr.ecr.ap-south-1.amazonaws.com/ec2demo-frontend:${{ env.IMAGE_TAG }}
