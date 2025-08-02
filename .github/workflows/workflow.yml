@@ -30,10 +30,10 @@ jobs:
 
       - name: Terraform Init
         working-directory: terraform
-        run: terraform init \
+        run: |
+          -terraform init \
           -backend-config="bucket=ec2demomadi" \
           -backend-config="key=ec2demomadi/terraform.tfstate" \
-          -backend-config="region=ap-south-1"
 
       - name: Terraform Plan
         working-directory: terraform
