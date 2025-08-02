@@ -31,7 +31,7 @@ jobs:
       - name: Terraform Init
         working-directory: terraform
         run: |
-          -terraform init \
+         terraform init \
           -backend-config="bucket=ec2demomadi" \
           -backend-config="key=ec2demomadi/terraform.tfstate" \
 
