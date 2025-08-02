@@ -3,7 +3,7 @@ name: Build & Push to ECR
 on:
   push:
     branches:
-      - main
+      - master
 
 env:
   IMAGE_TAG: ${{ github.sha }}
